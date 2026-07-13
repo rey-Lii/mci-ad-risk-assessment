@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use or discuss this software, please cite it using the metadata below."
+title: "MCI-to-Alzheimer's Dementia Risk Assessment"
+type: software
+authors:
+  - family-names: "Li"
+    given-names: "Qirui"
+repository-code: "https://github.com/rey-Lii/mci-ad-longitudinal-risk-prediction2"
+url: "https://github.com/rey-Lii/mci-ad-longitudinal-risk-prediction2"
+version: "V6.1-Hybrid-QC"
