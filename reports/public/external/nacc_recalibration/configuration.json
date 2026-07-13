@@ -1,0 +1,17 @@
+{
+  "stage": "35O",
+  "analysis": "secondary_patient_cross_fitted_nacc_recalibration",
+  "primary_external_result_unchanged": true,
+  "calibration_unit": "interval_hazard",
+  "calibration_methods": [
+    "intercept_only",
+    "intercept_slope"
+  ],
+  "calibration_stratification": "route_specific",
+  "patient_level_folds": 5,
+  "seed": 20260720,
+  "calibration_bins": 10,
+  "competing_endpoint_handling": "cause-specific censoring at non-AD dementia endpoint date",
+  "calibrator_fit_weighting": "patient-balanced known-interval-outcome weighting",
+  "evaluation_weighting": "patient-balanced cumulative/dynamic IPCW"
+}

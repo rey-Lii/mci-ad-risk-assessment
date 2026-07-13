@@ -1,6 +1,6 @@
 # History- and Resource-Adaptive MCI-to-AD Risk Modeling
 
-[![tests](https://github.com/rey-Lii/mci-ad-longitudinal-risk-prediction2/actions/workflows/tests.yml/badge.svg)](https://github.com/rey-Lii/mci-ad-longitudinal-risk-prediction2/actions/workflows/tests.yml)
+[![tests](https://github.com/rey-Lii/mci-ad-risk-assessment/actions/workflows/tests.yml/badge.svg)](https://github.com/rey-Lii/mci-ad-risk-assessment/actions/workflows/tests.yml)
 
 A frozen retrospective research prototype for dynamic **1-, 2-, 3-, and 5-year risk assessment of progression from mild cognitive impairment (MCI) to Alzheimer’s disease dementia**.
 
@@ -83,6 +83,18 @@ The exact frozen system was evaluated without retraining or external recalibrati
 | 5 years | 0.778 (0.768–0.789) | 0.762 | 0.202 |
 
 External discrimination transported better than absolute-risk calibration. Target-population recalibration and prospective evaluation would be required before any clinical use.
+
+### Secondary local recalibration analysis
+
+As a secondary model-updating analysis, the frozen NACC zero-shot predictions were recalibrated using patient-level fivefold cross-fitting. Calibration was performed separately for the Snapshot and Longitudinal Transformer routes across the four discrete-time hazard intervals. The original zero-shot NACC evaluation remains the primary external validation result; recalibrated estimates are not presented as zero-shot performance.
+
+| NACC analysis | Mean horizon Brier | Integrated Brier, 0–5 years | Mean absolute calibration gap |
+|---|---:|---:|---:|
+| Frozen zero-shot | 0.1594 | 0.1480 | 0.0666 |
+| Cross-fitted intercept-only | 0.1513 | 0.1399 | **0.0268** |
+| Cross-fitted intercept and slope | **0.1494** | **0.1383** | 0.0340 |
+
+Improvements were largest for the single-visit Snapshot route, while the longitudinal route showed less baseline calibration drift. Public aggregate outputs are available in [`reports/public/external/nacc_recalibration`](reports/public/external/nacc_recalibration).
 
 Full evaluation details and limitations are documented in the [Model Card](docs/MODEL_CARD.md).
 
