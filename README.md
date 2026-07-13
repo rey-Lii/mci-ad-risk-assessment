@@ -1,4 +1,4 @@
-# History- and Resource-Adaptive MCI-to-AD Risk Modeling
+﻿# History- and Resource-Adaptive MCI-to-AD Risk Modeling
 
 ## Links
 
@@ -53,3 +53,4 @@ conversion, and copied aggregate result files passed a 13-check parity audit.
 The complete numbered cohort, quality-control, model, audit, and NACC
 validation pipeline remains the authoritative implementation for full
 methodological review.
+
