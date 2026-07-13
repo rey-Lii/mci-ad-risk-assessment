@@ -84,7 +84,7 @@ The exact frozen system was evaluated without retraining or external recalibrati
 
 External discrimination transported better than absolute-risk calibration. Target-population recalibration and prospective evaluation would be required before any clinical use.
 
-Full evaluation details and limitations are documented in the [Model Card](MODEL_CARD.md).
+Full evaluation details and limitations are documented in the [Model Card](docs/MODEL_CARD.md).
 
 ## My contribution
 
@@ -162,5 +162,5 @@ The compact repository passed a 13-check parity audit against the complete froze
 ## Links
 
 - [Hosted research demo](https://huggingface.co/spaces/reylii/MCI-to-Alzheimers-Dementia-Risk-Assessment)
-- [Model Card](MODEL_CARD.md)
+- [Model Card](docs/MODEL_CARD.md)
 - [Complete frozen research and audit pipeline](https://github.com/rey-Lii/mci-ad-resource-adaptive-transformerrr)
