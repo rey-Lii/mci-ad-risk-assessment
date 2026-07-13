@@ -41,7 +41,10 @@ class PatientHistory:
 
     @property
     def history_depth(self) -> int:
-        return len({str(visit.date) for visit in self.visits})
+        normalized = normalize_visits(
+            [visit.as_dict() for visit in self.visits]
+        )
+        return len(normalized)
 
     def build_tensor_package(self) -> dict[str, np.ndarray]:
         return build_patient_tensor_package(
@@ -148,6 +151,30 @@ def _validate_score(module: str, value: float) -> None:
         raise ValueError(f"Global CDR must be one of: {allowed}.")
 
 
+def validate_patient_context(
+    *,
+    age: object,
+    sex_male: object,
+    education_years: object,
+) -> tuple[float, int, float]:
+    """Validate and normalize demographic context shared by both routes."""
+    age_value = float(age)
+    sex_value = float(sex_male)
+    education_value = float(education_years)
+
+    if not np.isfinite(age_value) or not 40.0 <= age_value <= 110.0:
+        raise ValueError("Age must be between 40 and 110 years.")
+    if not np.isfinite(sex_value) or sex_value not in (0.0, 1.0):
+        raise ValueError("Sex must be coded as female or male.")
+    if (
+        not np.isfinite(education_value)
+        or not 0.0 <= education_value <= 30.0
+    ):
+        raise ValueError("Education must be between 0 and 30 years.")
+
+    return age_value, int(sex_value), education_value
+
+
 def normalize_visits(
     visits: Iterable[dict[str, object]],
 ) -> list[dict[str, object]]:
@@ -163,6 +190,10 @@ def normalize_visits(
             if value is not None:
                 _validate_score(module, value)
             row[module] = value
+        if not any(row[module] is not None for module in MODULES):
+            raise ValueError(
+                f"Assessment {visit_index} must contain at least one score."
+            )
         normalized.append(row)
 
     if not normalized:
@@ -197,16 +228,11 @@ def build_patient_tensor_package(
     minimum_slope_days: int = MINIMUM_SLOPE_DAYS,
 ) -> dict[str, np.ndarray]:
     """Build one exact V6 raw tensor package from longitudinal patient entries."""
-    age = float(age)
-    education_years = float(education_years)
-    sex_male = int(sex_male)
-
-    if not 40.0 <= age <= 110.0:
-        raise ValueError("Age must be between 40 and 110 years.")
-    if sex_male not in (0, 1):
-        raise ValueError("Sex must be coded as female or male.")
-    if not 0.0 <= education_years <= 30.0:
-        raise ValueError("Education must be between 0 and 30 years.")
+    age, sex_male, education_years = validate_patient_context(
+        age=age,
+        sex_male=sex_male,
+        education_years=education_years,
+    )
 
     normalized = normalize_visits(visits)
     if len(normalized) > max_history_dates:
@@ -380,5 +406,6 @@ def transform_fold_features(
 __all__ = [
     "MODULES", "TOKEN_FEATURES", "CONTEXT_FEATURES", "HORIZONS",
     "MODULE_RANGES", "PatientVisit", "PatientHistory", "normalize_visits",
-    "build_patient_tensor_package", "transform_fold_features",
+    "validate_patient_context", "build_patient_tensor_package",
+    "transform_fold_features",
 ]

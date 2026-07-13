@@ -35,6 +35,7 @@ from .data import (
     build_patient_tensor_package,
     normalize_visits,
     transform_fold_features,
+    validate_patient_context,
 )
 from .model import (
     GapControlledLatestAnchoredModularTemporalTransformer,
@@ -736,6 +737,12 @@ def predict_frozen_hybrid(
         raise ValueError(
             f"Scenario must be one of: {', '.join(SCENARIOS)}."
         )
+
+    age, sex_male, education_years = validate_patient_context(
+        age=age,
+        sex_male=sex_male,
+        education_years=education_years,
+    )
 
     (
         normalized,
