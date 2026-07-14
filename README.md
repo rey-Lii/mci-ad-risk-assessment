@@ -15,9 +15,9 @@ A clinical-AI research prototype for dynamic **1-, 2-, 3-, and 5-year prediction
 
 ## Overview
 
-Clinical histories differ in both depth and assessment availability. Some patients have only one assessment date, while others have irregular longitudinal follow-up. Entire cognitive or functional modules may also be missing across patients or cohorts.
+Clinical histories differ in both depth and assessment availability. Some patients have only one assessment date or irregular longitudinal follow-up, particularly in primary-care, community, or resource-constrained settings. Entire cognitive or functional modules may also be unavailable across patients or cohorts.
 
-The frozen system adapts to both conditions:
+To accommodate these differences, the system uses:
 
 * **one assessment date** → regularized Snapshot survival expert;
 * **two or more assessment dates** → modular longitudinal Transformer;
@@ -42,15 +42,13 @@ The model uses routine clinical assessments without requiring PET, CSF, MRI, or 
 
 ## How the system works
 
-```mermaid
-flowchart LR
-    A[Clinical assessment history] --> B{Distinct assessment dates}
-    B -->|1 date| C[Snapshot survival expert]
-    B -->|2 or more dates| D[Modular longitudinal Transformer]
-    C --> E[Four interval hazards]
-    D --> E
-    E --> F[1-, 2-, 3-, and 5-year risks]
-```
+<p align="center">
+  <img
+    src="https://github.com/user-attachments/assets/7aef8a20-1c11-4ba9-a8dd-522bbde6c469"
+    alt="Overview of the history- and resource-adaptive hybrid survival system"
+    width="82%"
+  />
+</p>
 
 The longitudinal branch models five assessment modules separately:
 
@@ -138,17 +136,6 @@ Raw ADNI/NACC data, patient-level predictions, fitted preprocessors, and trained
 
 ---
 
-## Research contribution
-
-This project was independently designed and implemented by **Qirui Li**, including longitudinal clinical data engineering, dynamic landmark construction, hybrid routing, modular temporal modeling, internal evaluation, frozen NACC validation, calibration audits, inference packaging, and public demo deployment.
-
-**Research focus:** longitudinal disease modeling, heterogeneous clinical data, resource-aware prediction, model transportability, and trustworthy clinical AI.
-
----
-
-## Project status
-
-**V6.1-Hybrid-QC** is a frozen retrospective research release. Manuscript preparation is in progress.
 
 ## Contact
 
