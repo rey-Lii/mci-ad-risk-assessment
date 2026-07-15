@@ -18,10 +18,10 @@ Clinical histories vary across healthcare settings. Some patients have only one 
 
 Rather than forcing all patients through one sequence model, the system uses deterministic history-based routing:
 
-- **one assessment date** → Snapshot survival expert;
-- **repeated assessments** → modular longitudinal Transformer.
+- **one distinct assessment date** → regularized Snapshot survival expert;
+- **two or more distinct assessment dates** → modular longitudinal Transformer.
 
-The longitudinal branch models five cognitive and functional assessment domains separately and explicitly represents module availability.
+Both branches use explicit module-availability information, while the longitudinal branch models the five cognitive and functional assessments as separate temporal modules.
 
 The system uses low-burden clinical information without requiring PET, CSF, MRI, or genetic testing.
 
@@ -43,7 +43,7 @@ The system uses low-burden clinical information without requiring PET, CSF, MRI,
 - **History adaptation:** Different prediction pathways for single-date and longitudinal histories.
 - **Availability-aware modeling:** Explicit representation of missing or unavailable assessment modules.
 - **External evaluation:** Frozen ADNI-trained system evaluated on NACC without retraining.
-- **Transparent workflow:** Public inference pipeline, validation tests, and aggregate evaluation reports.
+- **Transparent workflow:** Public architecture, routing logic, validation tests, and aggregate evaluation reports.
 
 ---
 
@@ -108,20 +108,20 @@ The longitudinal representation additionally includes:
 
 Each eligible MCI assessment is treated as a prediction landmark.
 
-Only information available at or before each landmark is used for prediction, and patient-level grouping is maintained during evaluation to reduce information leakage.
+Only information available at or before each landmark is used for prediction, and all landmarks from the same participant are kept within a single evaluation partition to prevent participant overlap across partitions.
 
 ### History-adaptive routing
 
 The routing rule is deterministic:
 
 ```text
-one assessment date
+one distinct assessment date
         ↓
-Snapshot survival expert
+regularized Snapshot survival expert
 
-two or more assessment dates
+two or more distinct assessment dates
         ↓
-Modular longitudinal Transformer
+modular longitudinal Transformer
 ```
 
 This avoids applying a sequence model to histories without meaningful longitudinal information.
@@ -142,9 +142,11 @@ The hosted Hugging Face Space provides model-backed inference:
 
 The interface accepts demographic information, cognitive and functional assessments, and assessment dates. The system automatically selects the appropriate prediction pathway.
 
+The hosted demo uses a separately deployed frozen artifact bundle. Fitted preprocessors and model weights are not redistributed in this compact public repository.
+
 ---
 
-## Local validation
+## Local source-level validation
 
 ```bash
 git clone https://github.com/rey-Lii/mci-ad-risk-assessment.git
