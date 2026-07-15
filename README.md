@@ -25,6 +25,15 @@ The longitudinal branch models five cognitive and functional assessment domains 
 
 The system uses low-burden clinical information without requiring PET, CSF, MRI, or genetic testing.
 
+
+<p align="center">
+  <img
+    src="https://github.com/user-attachments/assets/7aef8a20-1c11-4ba9-a8dd-522bbde6c469"
+    alt="Overview of the history- and resource-adaptive hybrid survival system"
+    width="82%"
+  />
+</p>
+
 ---
 
 ## Highlights
@@ -38,35 +47,27 @@ The system uses low-burden clinical information without requiring PET, CSF, MRI,
 
 ---
 
-## System overview
-
-<p align="center">
-  <img
-    src="https://github.com/user-attachments/assets/7aef8a20-1c11-4ba9-a8dd-522bbde6c469"
-    alt="Overview of the history- and resource-adaptive hybrid survival system"
-    width="82%"
-  />
-</p>
-
-The system combines two prediction experts:
-
-- a regularized Snapshot survival expert for patients with a single assessment date;
-- a modular longitudinal Transformer for patients with repeated assessments.
-
-Both branches estimate discrete-time hazards and convert them into cumulative 1-, 2-, 3-, and 5-year risks.
-
----
-
 ## Results at a glance
 
 | Evaluation | Cohort | Participants | Dynamic landmarks | AUROC range |
 |---|---|---:|---:|---:|
 | Internal development evaluation | ADNI | 1,425 | 4,223 | 0.815–0.887 |
-| Frozen external evaluation | NACC | 12,052 | 26,303 | 0.719–0.778 |
+| Frozen zero-shot external evaluation | NACC | 12,052 | 26,303 | 0.719–0.778 |
+
+The NACC evaluation included **8,817 Snapshot-route landmarks** and **17,486 longitudinal-route landmarks**.
+
+### Horizon-specific performance
+
+| Horizon | ADNI AUROC | ADNI AUPRC | ADNI Brier | NACC AUROC | NACC AUPRC | NACC Brier |
+|---|---:|---:|---:|---:|---:|---:|
+| 1 year | 0.815 | 0.332 | 0.0869 | 0.719 | 0.123 | 0.0556 |
+| 2 years | 0.844 | 0.641 | 0.1366 | 0.733 | 0.441 | 0.1756 |
+| 3 years | 0.861 | 0.761 | 0.1463 | 0.759 | 0.619 | 0.2042 |
+| 5 years | 0.887 | 0.877 | 0.1378 | 0.778 | 0.762 | 0.2024 |
 
 The frozen ADNI-trained system was evaluated on NACC without model retraining, feature revision, hyperparameter reselection, or initial external recalibration.
 
-The system retained moderate external discrimination, while calibration differences between cohorts were assessed separately.
+External AUROC ranged from **0.719 to 0.778** across the four prediction horizons. The zero-shot predictions remained the primary external-validation results, while calibration and secondary recalibration analyses were evaluated separately.
 
 ---
 
