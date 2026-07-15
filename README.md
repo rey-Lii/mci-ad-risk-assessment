@@ -1,4 +1,4 @@
-# Dynamic MCI-to-AD Risk Prediction from Routine Clinical Assessments
+# Dynamic MCI-to-AD Risk Prediction Using Routine Clinical Assessments
 
 [![Tests](https://github.com/rey-Lii/mci-ad-risk-assessment/actions/workflows/tests.yml/badge.svg)](https://github.com/rey-Lii/mci-ad-risk-assessment/actions/workflows/tests.yml)
 
