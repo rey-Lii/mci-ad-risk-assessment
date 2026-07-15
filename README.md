@@ -1,46 +1,44 @@
-# Low-Burden, History- and Resource-Adaptive MCI-to-AD Risk Prediction
+# Low-Burden, History- and Availability-Aware MCI-to-AD Risk Prediction
 
 [![Tests](https://github.com/rey-Lii/mci-ad-risk-assessment/actions/workflows/tests.yml/badge.svg)](https://github.com/rey-Lii/mci-ad-risk-assessment/actions/workflows/tests.yml)
-![Python](https://img.shields.io/badge/Python-3.10%20%7C%203.11-blue)
-![Version](https://img.shields.io/badge/model-V6.1--Hybrid--QC-purple)
 
-A clinical-AI research prototype for dynamic **1-, 2-, 3-, and 5-year prediction of progression from mild cognitive impairment (MCI) to Alzheimer’s disease dementia**, using routine cognitive and functional assessments.
+**A history-adaptive and availability-aware clinical-AI system using routine cognitive and functional assessments, developed on ADNI and externally evaluated on NACC.**
 
-**[Open the model-backed demo](https://huggingface.co/spaces/reylii/MCI-to-Alzheimers-Dementia-Risk-Assessment)**
-[Model Card](docs/MODEL_CARD.md) · [Complete Frozen Pipeline](https://github.com/rey-Lii/mci-ad-resource-adaptive-transformerrr)
+[Open the model-backed research demo](https://huggingface.co/spaces/reylii/MCI-to-Alzheimers-Dementia-Risk-Assessment)
 
-> Research use only. This retrospective prototype is not intended for clinical diagnosis or patient-level decision-making.
+> **Research use only.** Not for clinical use. Do not enter real patient information.
 
 ---
 
 ## Overview
 
-Clinical histories differ in both depth and assessment availability. Some patients have only one assessment date or irregular longitudinal follow-up, particularly in primary-care, community, or resource-constrained settings. Entire cognitive or functional modules may also be unavailable across patients or cohorts.
+This repository presents an externally evaluated pipeline for dynamic 1-, 2-, 3-, and 5-year prediction of progression from mild cognitive impairment (MCI) to Alzheimer’s disease dementia.
 
-To accommodate these differences, the system uses:
+Clinical histories vary across healthcare settings. Some patients have only one assessment date, while others have repeated but irregular follow-up. Cognitive and functional assessments may also be unavailable across patients or cohorts, particularly in primary-care, community, and resource-limited settings.
 
-* **one assessment date** → regularized Snapshot survival expert;
-* **two or more assessment dates** → modular longitudinal Transformer;
-* **heterogeneous assessment availability** → explicit module-level availability representation.
+Rather than forcing all patients through one sequence model, the system uses deterministic history-based routing:
 
-The model uses routine clinical assessments without requiring PET, CSF, MRI, or genetic biomarkers.
+- **one assessment date** → Snapshot survival expert;
+- **repeated assessments** → modular longitudinal Transformer.
+
+The longitudinal branch models five cognitive and functional assessment domains separately and explicitly represents module availability.
+
+The system uses low-burden clinical information without requiring PET, CSF, MRI, or genetic testing.
 
 ---
 
 ## Highlights
 
-* Dynamic 1-, 2-, 3-, and 5-year MCI-to-AD dementia risk prediction.
-* Leakage-aware dynamic MCI landmark construction.
-* Deterministic history-adaptive routing.
-* Five separately represented cognitive and functional modules.
-* Irregular-time features, trajectory summaries, and latest-state anchoring.
-* Patient-grouped ADNI development evaluation.
-* Frozen zero-shot NACC external evaluation without retraining.
-* Public input validation, tensor construction, architecture, routing, tests, and aggregate results.
+- **Task:** Dynamic 1-, 2-, 3-, and 5-year MCI-to-AD risk prediction.
+- **Clinical setting:** Low-burden risk stratification using routine clinical assessments.
+- **History adaptation:** Different prediction pathways for single-date and longitudinal histories.
+- **Availability-aware modeling:** Explicit representation of missing or unavailable assessment modules.
+- **External evaluation:** Frozen ADNI-trained system evaluated on NACC without retraining.
+- **Transparent workflow:** Public inference pipeline, validation tests, and aggregate evaluation reports.
 
 ---
 
-## How the system works
+## System overview
 
 <p align="center">
   <img
@@ -50,69 +48,121 @@ The model uses routine clinical assessments without requiring PET, CSF, MRI, or 
   />
 </p>
 
-The longitudinal branch models five assessment modules separately:
+The system combines two prediction experts:
 
-* ADAS13
-* MMSE
-* global CDR
-* CDR Sum of Boxes
-* Functional Activities Questionnaire
+- a regularized Snapshot survival expert for patients with a single assessment date;
+- a modular longitudinal Transformer for patients with repeated assessments.
 
-Age, sex, education, assessment timing, missingness, and module availability are also represented.
-
-The final hybrid system contains five fold-specific Snapshot pipelines and five fold-specific Transformer checkpoints. Only one route is used for each patient history, after which fold-level hazards are averaged and converted to monotonic cumulative risks.
+Both branches estimate discrete-time hazards and convert them into cumulative 1-, 2-, 3-, and 5-year risks.
 
 ---
 
-## Results
+## Results at a glance
 
-### ADNI development evaluation
+| Evaluation | Cohort | Participants | Dynamic landmarks | AUROC range |
+|---|---|---:|---:|---:|
+| Internal development evaluation | ADNI | 1,425 | 4,223 | 0.815–0.887 |
+| Frozen external evaluation | NACC | 12,052 | 26,303 | 0.719–0.778 |
 
-**1,425 participants · 4,223 dynamic MCI landmarks**
+The frozen ADNI-trained system was evaluated on NACC without model retraining, feature revision, hyperparameter reselection, or initial external recalibration.
 
-| Horizon | AUROC | IPCW AUPRC | IPCW Brier |
-| ------- | ----: | ---------: | ---------: |
-| 1 year  | 0.815 |      0.332 |     0.0869 |
-| 2 years | 0.844 |      0.641 |     0.1366 |
-| 3 years | 0.861 |      0.761 |     0.1463 |
-| 5 years | 0.887 |      0.877 |     0.1378 |
-
-### NACC frozen external evaluation
-
-**12,052 participants · 26,303 dynamic MCI landmarks**
-
-The exact ADNI-trained system was evaluated without retraining or initial external recalibration. ADAS13 was treated as structurally unavailable.
-
-| Horizon | IPCW AUROC (95% CI) | IPCW AUPRC | IPCW Brier |
-| ------- | ------------------: | ---------: | ---------: |
-| 1 year  | 0.719 (0.703–0.735) |      0.123 |     0.0556 |
-| 2 years | 0.733 (0.724–0.743) |      0.441 |     0.1756 |
-| 3 years | 0.759 (0.750–0.768) |      0.619 |     0.2042 |
-| 5 years | 0.778 (0.768–0.789) |      0.762 |     0.2024 |
-
-External discrimination transported better than absolute-risk calibration. Secondary cross-fitted recalibration improved calibration without retraining the underlying prediction models.
+The system retained moderate external discrimination, while calibration differences between cohorts were assessed separately.
 
 ---
 
-## Try the demo
+## Data and variables
 
-The hosted Hugging Face Space provides model-backed inference using a separately deployed frozen artifact bundle:
+Raw ADNI and NACC participant-level data are not redistributed.
 
-**[Launch the interactive research demo](https://huggingface.co/spaces/reylii/MCI-to-Alzheimers-Dementia-Risk-Assessment)**
+The system uses routine clinical information:
 
-The public interface accepts demographic, cognitive, functional, and assessment-date inputs and automatically selects the Snapshot or longitudinal route.
+### Demographic information
 
-### Local source-level check
+- age;
+- sex;
+- education.
+
+### Cognitive and functional assessments
+
+Five assessment modules are modeled separately:
+
+- ADAS13;
+- MMSE;
+- global Clinical Dementia Rating;
+- Clinical Dementia Rating Sum of Boxes;
+- Functional Activities Questionnaire.
+
+The longitudinal representation additionally includes:
+
+- assessment timing;
+- irregular follow-up intervals;
+- recency information;
+- module-level missingness and availability indicators;
+- trajectory summaries.
+
+---
+
+## Method overview
+
+### Dynamic landmark construction
+
+Each eligible MCI assessment is treated as a prediction landmark.
+
+Only information available at or before each landmark is used for prediction, and patient-level grouping is maintained during evaluation to reduce information leakage.
+
+### History-adaptive routing
+
+The routing rule is deterministic:
+
+```text
+one assessment date
+        ↓
+Snapshot survival expert
+
+two or more assessment dates
+        ↓
+Modular longitudinal Transformer
+```
+
+This avoids applying a sequence model to histories without meaningful longitudinal information.
+
+### Modular longitudinal modeling
+
+Each cognitive and functional assessment module is represented separately.
+
+The model distinguishes between observed assessments, missing assessments, and unavailable modules, allowing it to handle heterogeneous assessment patterns across patients and cohorts.
+
+---
+
+## Research demo
+
+The hosted Hugging Face Space provides model-backed inference:
+
+[Launch the interactive demo](https://huggingface.co/spaces/reylii/MCI-to-Alzheimers-Dementia-Risk-Assessment)
+
+The interface accepts demographic information, cognitive and functional assessments, and assessment dates. The system automatically selects the appropriate prediction pathway.
+
+---
+
+## Local validation
 
 ```bash
 git clone https://github.com/rey-Lii/mci-ad-risk-assessment.git
 cd mci-ad-risk-assessment
+
 pip install -e ".[test]"
+
 pytest
 python examples/quickstart.py
 ```
 
-The local quickstart demonstrates validation, routing, temporal tensor construction, and module-availability handling. Fitted model weights and preprocessors are not redistributed in this compact repository.
+The public repository demonstrates:
+
+- input validation;
+- temporal tensor construction;
+- history-based routing;
+- module-availability handling;
+- risk conversion.
 
 ---
 
@@ -122,23 +172,20 @@ The local quickstart demonstrates validation, routing, temporal tensor construct
 src/ra_fmlr/
 ├── data.py          input validation and tensor construction
 ├── model.py         modular Transformer and route selection
-├── inference.py     frozen hybrid inference contract
-├── evaluation.py    hazard-to-risk and metric helpers
-└── training.py      wrappers for the complete frozen pipeline
+├── inference.py     frozen artifact loading and prediction pipeline
+├── evaluation.py    risk conversion and metric utilities
+└── training.py      training wrappers
 
-examples/            synthetic quickstart
-tests/               validation, model, and risk tests
-docs/                model card and supporting documentation
-reports/public/      aggregate public evaluation outputs
+examples/
+tests/
+docs/
+reports/public/
 ```
-
-Raw ADNI/NACC data, patient-level predictions, fitted preprocessors, and trained checkpoints are not redistributed.
 
 ---
 
-
 ## Contact
 
-**Qirui Li**
-GitHub: [rey-Lii](https://github.com/rey-Lii)
-Email: [liqirui019@gmail.com](mailto:liqirui019@gmail.com)
+**Qirui Li**  
+GitHub: [rey-Lii](https://github.com/rey-Lii)  
+Email: liqirui019@gmail.com
