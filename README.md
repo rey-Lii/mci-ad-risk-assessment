@@ -28,8 +28,8 @@ The system uses low-burden clinical information without requiring PET, CSF, MRI,
 
 <p align="center">
   <img
-    src="https://github.com/user-attachments/assets/7aef8a20-1c11-4ba9-a8dd-522bbde6c469"
-    alt="Overview of the history- and resource-adaptive hybrid survival system"
+    src="results/figures/hybrid_system_overview.png"
+    alt="Overview of the history-adaptive and availability-aware hybrid survival system"
     width="82%"
   />
 </p>
@@ -54,8 +54,7 @@ The system uses low-burden clinical information without requiring PET, CSF, MRI,
 | Internal development evaluation | ADNI | 1,425 | 4,223 | 0.815–0.887 |
 | Frozen zero-shot external evaluation | NACC | 12,052 | 26,303 | 0.719–0.778 |
 
-The NACC evaluation included **8,817 Snapshot-route landmarks** and **17,486 longitudinal-route landmarks**.
-
+The NACC evaluation comprised **8,817 Snapshot-route landmarks** and **17,486 longitudinal-route landmarks**, with **ADAS13 treated as structurally unavailable**. IPCW was used to account for right censoring.
 ### Horizon-specific performance
 
 | Horizon | ADNI AUROC | ADNI AUPRC | ADNI Brier | NACC AUROC | NACC AUPRC | NACC Brier |
@@ -65,9 +64,9 @@ The NACC evaluation included **8,817 Snapshot-route landmarks** and **17,486 lon
 | 3 years | 0.861 | 0.761 | 0.1463 | 0.759 | 0.619 | 0.2042 |
 | 5 years | 0.887 | 0.877 | 0.1378 | 0.778 | 0.762 | 0.2024 |
 
-The frozen ADNI-trained system was evaluated on NACC without model retraining, feature revision, hyperparameter reselection, or initial external recalibration.
+The frozen ADNI-trained system was evaluated zero-shot on NACC without retraining, feature changes, hyperparameter reselection, or external recalibration. These remain the primary external-validation results.
 
-External AUROC ranged from **0.719 to 0.778** across the four prediction horizons. The zero-shot predictions remained the primary external-validation results, while calibration and secondary recalibration analyses were evaluated separately.
+In a separate cross-fitted recalibration analysis, the mean absolute calibration gap decreased from **0.0666** to **0.0268** with intercept-only recalibration and to **0.0340** with intercept-and-slope recalibration, while the prediction models remained frozen.
 
 ---
 
@@ -164,24 +163,6 @@ The public repository demonstrates:
 - history-based routing;
 - module-availability handling;
 - risk conversion.
-
----
-
-## Repository structure
-
-```text
-src/ra_fmlr/
-├── data.py          input validation and tensor construction
-├── model.py         modular Transformer and route selection
-├── inference.py     frozen artifact loading and prediction pipeline
-├── evaluation.py    risk conversion and metric utilities
-└── training.py      training wrappers
-
-examples/
-tests/
-docs/
-reports/public/
-```
 
 ---
 
