@@ -1,6 +1,6 @@
 # Dynamic MCI-to-AD Risk Prediction Using Routine Clinical Assessments
 
-[![Tests](https://github.com/rey-Lii/mci-ad-risk-assessment/actions/workflows/tests.yml/badge.svg)](https://github.com/rey-Lii/mci-ad-risk-assessment/actions/workflows/tests.yml)
+[![Tests](https://github.com/rey-Lii/dynamic-mci-ad-risk-prediction/actions/workflows/tests.yml/badge.svg)](https://github.com/rey-Lii/dynamic-mci-ad-risk-prediction/actions/workflows/tests.yml)
 
 **A hybrid clinical-AI system for single-date and longitudinal patient histories, developed on ADNI and externally evaluated on NACC.**
 
@@ -140,8 +140,8 @@ The hosted demo uses a separately deployed frozen artifact bundle. Fitted prepro
 ## Local source-level validation
 
 ```bash
-git clone https://github.com/rey-Lii/mci-ad-risk-assessment.git
-cd mci-ad-risk-assessment
+git clone https://github.com/rey-Lii/dynamic-mci-ad-risk-prediction.git
+cd dynamic-mci-ad-risk-prediction
 
 pip install -e ".[test]"
 
