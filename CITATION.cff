@@ -1,10 +1,9 @@
 cff-version: 1.2.0
 message: "If you use or discuss this software, please cite it using the metadata below."
-title: "History- and Resource-Adaptive Dynamic Prediction of MCI-to-Alzheimer's Dementia Conversion"
+title: "Dynamic MCI-to-AD Risk Prediction Using Routine Clinical Assessments"
 type: software
 authors:
   - family-names: "Li"
     given-names: "Qirui"
-repository-code: "https://github.com/rey-Lii/mci-ad-risk-assessment"
-url: "https://github.com/rey-Lii/mci-ad-risk-assessment"
-version: "V6.1-Hybrid-QC"
+repository-code: "https://github.com/rey-Lii/dynamic-mci-ad-risk-prediction"
+url: "https://github.com/rey-Lii/dynamic-mci-ad-risk-prediction"
