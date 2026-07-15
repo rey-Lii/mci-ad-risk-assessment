@@ -35,16 +35,6 @@ The system uses routine clinical information without requiring PET, CSF, MRI, or
 
 ---
 
-## Highlights
-
-- **Dynamic prediction:** 1-, 2-, 3-, and 5-year MCI-to-AD risk estimates.
-- **History-based routing:** Separate prediction models for single-date and longitudinal histories.
-- **Availability-aware modeling:** Explicit representation of missing or unavailable assessment modules.
-- **Low-burden inputs:** Routine demographic, cognitive, and functional assessments.
-- **External evaluation:** Frozen ADNI-trained system evaluated zero-shot on NACC.
-- **Transparent implementation:** Public architecture, routing logic, validation tests, and aggregate reports.
-
----
 
 ## Results at a glance
 
