@@ -3,9 +3,9 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "ra-fmlr"
+name = "mci-ad-risk"
 version = "0.6.1"
-description = "History- and resource-adaptive MCI-to-AD risk modeling"
+description = "Dynamic MCI-to-AD risk prediction using routine clinical assessments"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
