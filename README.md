@@ -1,8 +1,8 @@
-# Low-Burden, History- and Availability-Aware MCI-to-AD Risk Prediction
+# Dynamic MCI-to-AD Risk Prediction from Routine Clinical Assessments
 
 [![Tests](https://github.com/rey-Lii/mci-ad-risk-assessment/actions/workflows/tests.yml/badge.svg)](https://github.com/rey-Lii/mci-ad-risk-assessment/actions/workflows/tests.yml)
 
-**A history-adaptive and availability-aware clinical-AI system using routine cognitive and functional assessments, developed on ADNI and externally evaluated on NACC.**
+**A hybrid clinical-AI system for single-date and longitudinal patient histories, developed on ADNI and externally evaluated on NACC.**
 
 [Open the model-backed research demo](https://huggingface.co/spaces/reylii/MCI-to-Alzheimers-Dementia-Risk-Assessment)
 
