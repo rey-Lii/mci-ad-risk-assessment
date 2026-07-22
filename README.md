@@ -35,6 +35,20 @@ The system uses routine clinical information without requiring PET, CSF, MRI, or
 
 ---
 
+## Key design contributions
+
+* **History-adaptive prediction.** Histories with one distinct assessment date are handled by a regularized Snapshot survival expert, while histories with repeated assessments are handled by a modular longitudinal Transformer. This avoids imposing artificial trajectory assumptions on patients without genuine longitudinal information.
+
+* **Availability-aware modular modeling.** Five cognitive and functional assessments are represented as separate modules, with observed measurements, missing measurements, and unavailable modules encoded explicitly.
+
+* **Current state combined with historical trajectory.** The longitudinal branch anchors prediction in the latest clinical state while incorporating module-specific change, timing, visit gaps, recency, and local trajectory summaries.
+
+* **Operation under reduced-assessment settings.** Development considered natural availability patterns and predefined scenarios such as no-ADAS13, MMSE-plus-CDR, and MMSE-only, reflecting variation in assessment access across healthcare settings.
+
+* **Frozen cross-cohort evaluation.** The ADNI-trained system was evaluated on NACC without retraining, feature revision, hyperparameter reselection, or primary external recalibration, with calibration examined separately.
+
+---
+
 
 ## Results at a glance
 
